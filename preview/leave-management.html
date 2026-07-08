@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leave Management - Indorama SMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nav-item {
+      display: block;
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      color: #374151;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+    .nav-item:hover { background-color: #f3f4f6; }
+    .nav-item.active { background-color: #3b82f6; color: #ffffff; }
+  </style>
+</head>
+<body class="flex h-screen bg-gray-100 overflow-hidden">
+
+  <!-- ── Sidebar ── -->
+  <aside class="w-64 bg-white shadow-lg flex flex-col flex-shrink-0">
+    <!-- Logo -->
+    <div class="p-6 border-b flex items-center gap-3">
+      <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        </svg>
+      </div>
+      <div>
+        <p class="text-sm font-bold text-gray-800 leading-tight">Indorama</p>
+        <p class="text-xs text-gray-400 leading-tight">Security SMS</p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 py-4 px-2 space-y-1">
+      <a href="dashboard.html"           class="nav-item">Dashboard</a>
+      <a href="employee-management.html" class="nav-item">Employee Management</a>
+      <a href="attendance.html"          class="nav-item">Attendance</a>
+      <a href="leave-management.html"    class="nav-item active">Leave Management</a>
+      <a href="reports.html"             class="nav-item">Reports</a>
+      <a href="user-manual.html"         class="nav-item">User Manual</a>
+    </nav>
+
+    <!-- Logout -->
+    <div class="p-4 border-t">
+      <a href="#" class="nav-item text-red-500 hover:bg-red-50">
+        <span class="flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+          Logout
+        </span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── Main Content ── -->
+  <main class="flex-1 overflow-y-auto">
+    <div class="p-8">
+
+      <!-- Page Header -->
+      <h1 class="text-2xl font-bold text-gray-800">Leave Management</h1>
+
+      <!-- Filter Section -->
+      <section class="bg-white rounded-xl shadow p-6 mt-6 mb-6">
+        <div class="grid grid-cols-12 gap-4 items-end">
+
+          <!-- Date Filter -->
+          <div class="col-span-2">
+            <label for="filterDate" class="block text-sm font-medium text-gray-700 mb-2">Date</label>
+            <input
+              type="date"
+              id="filterDate"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+
+          <!-- Name Search -->
+          <div class="col-span-3">
+            <label for="filterName" class="block text-sm font-medium text-gray-700 mb-2">Name Search</label>
+            <input
+              type="text"
+              id="filterName"
+              placeholder="Search by name..."
+              class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+
+          <!-- Leave Type Filter -->
+          <div class="col-span-2">
+            <label for="filterLeaveType" class="block text-sm font-medium text-gray-700 mb-2">Leave Type</label>
+            <select
+              id="filterLeaveType"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="ALL" selected>ALL</option>
+              <option value="REST">REST</option>
+              <option value="ABSENT">ABSENT</option>
+              <option value="EL">EL</option>
+              <option value="CL">CL</option>
+              <option value="ML">ML</option>
+            </select>
+          </div>
+
+          <!-- Spacer -->
+          <div class="col-span-3"></div>
+
+          <!-- Add New Leave Button -->
+          <div class="col-span-2">
+            <button
+              id="openDrawerBtn"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-md text-sm transition-colors"
+            >
+              + Add New Leave
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Leave Table -->
+      <section class="bg-white rounded-xl shadow p-6">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left text-gray-700">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-3 border-b font-semibold text-gray-600">SNo.</th>
+                <th class="px-4 py-3 border-b font-semibold text-gray-600">Emp. Id</th>
+                <th class="px-4 py-3 border-b font-semibold text-gray-600">Emp. Name</th>
+                <th class="px-4 py-3 border-b font-semibold text-gray-600">Leave Type</th>
+                <th class="px-4 py-3 border-b font-semibold text-gray-600">From Date</th>
+                <th class="px-4 py-3 border-b font-semibold text-gray-600">To Date</th>
+                <th class="px-4 py-3 border-b font-semibold text-gray-600">Status</th>
+                <th class="px-4 py-3 border-b font-semibold text-gray-600">Edit / Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <!-- Row 1 -->
+              <tr>
+                <td class="px-4 py-3 border-b">1</td>
+                <td class="px-4 py-3 border-b">EMP-1001</td>
+                <td class="px-4 py-3 border-b font-medium">SK Singh</td>
+                <td class="px-4 py-3 border-b">CL</td>
+                <td class="px-4 py-3 border-b">10/06/2025</td>
+                <td class="px-4 py-3 border-b">12/06/2025</td>
+                <td class="px-4 py-3 border-b">
+                  <span class="inline-block px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">Approved</span>
+                </td>
+                <td class="px-4 py-3 border-b">
+                  <div class="flex gap-2">
+                    <button 
+                      class="edit-leave-btn text-blue-600 hover:text-blue-800" 
+                      title="Edit"
+                      data-id="1"
+                      data-empid="EMP-1001"
+                      data-leavetype="CL"
+                      data-fromdate="2025-06-10"
+                      data-todate="2025-06-12"
+                      data-status="Approved"
+                    >✏️</button>
+                    <button class="text-red-600 hover:text-red-800" title="Delete">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Row 2 -->
+              <tr class="bg-gray-50">
+                <td class="px-4 py-3 border-b">2</td>
+                <td class="px-4 py-3 border-b">EMP-1002</td>
+                <td class="px-4 py-3 border-b font-medium">AK Dubey</td>
+                <td class="px-4 py-3 border-b">EL</td>
+                <td class="px-4 py-3 border-b">14/06/2025</td>
+                <td class="px-4 py-3 border-b">16/06/2025</td>
+                <td class="px-4 py-3 border-b">
+                  <span class="inline-block px-2 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-700">Pending</span>
+                </td>
+                <td class="px-4 py-3 border-b">
+                  <div class="flex gap-2">
+                    <button 
+                      class="edit-leave-btn text-blue-600 hover:text-blue-800" 
+                      title="Edit"
+                      data-id="2"
+                      data-empid="EMP-1002"
+                      data-leavetype="EL"
+                      data-fromdate="2025-06-14"
+                      data-todate="2025-06-16"
+                      data-status="Pending"
+                    >✏️</button>
+                    <button class="text-red-600 hover:text-red-800" title="Delete">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Row 3 -->
+              <tr>
+                <td class="px-4 py-3 border-b">3</td>
+                <td class="px-4 py-3 border-b">EMP-1003</td>
+                <td class="px-4 py-3 border-b font-medium">SP Singh</td>
+                <td class="px-4 py-3 border-b">ML</td>
+                <td class="px-4 py-3 border-b">09/06/2025</td>
+                <td class="px-4 py-3 border-b">11/06/2025</td>
+                <td class="px-4 py-3 border-b">
+                  <span class="inline-block px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">Approved</span>
+                </td>
+                <td class="px-4 py-3 border-b">
+                  <div class="flex gap-2">
+                    <button 
+                      class="edit-leave-btn text-blue-600 hover:text-blue-800" 
+                      title="Edit"
+                      data-id="3"
+                      data-empid="EMP-1003"
+                      data-leavetype="ML"
+                      data-fromdate="2025-06-09"
+                      data-todate="2025-06-11"
+                      data-status="Approved"
+                    >✏️</button>
+                    <button class="text-red-600 hover:text-red-800" title="Delete">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Row 4 -->
+              <tr class="bg-gray-50">
+                <td class="px-4 py-3 border-b">4</td>
+                <td class="px-4 py-3 border-b">EMP-1004</td>
+                <td class="px-4 py-3 border-b font-medium">Satyajeet Kumar</td>
+                <td class="px-4 py-3 border-b">REST</td>
+                <td class="px-4 py-3 border-b">13/06/2025</td>
+                <td class="px-4 py-3 border-b">13/06/2025</td>
+                <td class="px-4 py-3 border-b">
+                  <span class="inline-block px-2 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-700">Pending</span>
+                </td>
+                <td class="px-4 py-3 border-b">
+                  <div class="flex gap-2">
+                    <button 
+                      class="edit-leave-btn text-blue-600 hover:text-blue-800" 
+                      title="Edit"
+                      data-id="4"
+                      data-empid="EMP-1004"
+                      data-leavetype="REST"
+                      data-fromdate="2025-06-13"
+                      data-todate="2025-06-13"
+                      data-status="Pending"
+                    >✏️</button>
+                    <button class="text-red-600 hover:text-red-800" title="Delete">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Row 5 -->
+              <tr>
+                <td class="px-4 py-3 border-b">5</td>
+                <td class="px-4 py-3 border-b">EMP-1005</td>
+                <td class="px-4 py-3 border-b font-medium">SK Mishra</td>
+                <td class="px-4 py-3 border-b">ABSENT</td>
+                <td class="px-4 py-3 border-b">12/06/2025</td>
+                <td class="px-4 py-3 border-b">12/06/2025</td>
+                <td class="px-4 py-3 border-b">
+                  <span class="inline-block px-2 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-700">Pending</span>
+                </td>
+                <td class="px-4 py-3 border-b">
+                  <div class="flex gap-2">
+                    <button 
+                      class="edit-leave-btn text-blue-600 hover:text-blue-800" 
+                      title="Edit"
+                      data-id="5"
+                      data-empid="EMP-1005"
+                      data-leavetype="ABSENT"
+                      data-fromdate="2025-06-12"
+                      data-todate="2025-06-12"
+                      data-status="Pending"
+                    >✏️</button>
+                    <button class="text-red-600 hover:text-red-800" title="Delete">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Drawer Overlay -->
+  <div id="drawerOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+
+  <!-- Add New Leave Drawer -->
+  <aside
+    id="leaveDrawer"
+    class="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col"
+  >
+    <!-- Drawer Header -->
+    <div class="flex items-center justify-between p-6 border-b">
+      <h2 id="drawerTitle" class="text-xl font-bold text-gray-800">Add New Leave</h2>
+      <button id="closeDrawerBtn" class="text-gray-500 hover:text-gray-700 text-2xl leading-none font-medium">×</button>
+    </div>
+
+    <!-- Drawer Form -->
+    <div class="flex-1 overflow-y-auto p-6">
+      <form id="leaveForm" class="space-y-5">
+
+        <!-- Employee ID -->
+        <div>
+          <label for="empId" class="block text-sm font-medium text-gray-700 mb-2">
+            Employee ID <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="empId"
+            placeholder="Enter Employee ID"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        <!-- Leave Type -->
+        <div>
+          <label for="leaveType" class="block text-sm font-medium text-gray-700 mb-2">
+            Leave Type <span class="text-red-500">*</span>
+          </label>
+          <select
+            id="leaveType"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="" disabled selected>Select Leave Type</option>
+            <option value="REST">REST</option>
+            <option value="ABSENT">ABSENT</option>
+            <option value="EL">EL</option>
+            <option value="CL">CL</option>
+            <option value="ML">ML</option>
+          </select>
+        </div>
+
+        <!-- From Date -->
+        <div>
+          <label for="fromDate" class="block text-sm font-medium text-gray-700 mb-2">
+            From Date <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            id="fromDate"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        <!-- To Date -->
+        <div>
+          <label for="toDate" class="block text-sm font-medium text-gray-700 mb-2">
+            To Date <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            id="toDate"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        <!-- Status (shown only in edit mode) -->
+        <div id="statusField" class="hidden">
+          <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+            Status <span class="text-red-500">*</span>
+          </label>
+          <select
+            id="status"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="Approved">Approved</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </div>
+
+        <!-- Submit -->
+        <button
+          id="submitBtn"
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-md text-sm transition-colors"
+        >
+          Submit
+        </button>
+
+      </form>
+    </div>
+  </aside>
+
+  <script>
+    /* ---- Drawer & Edit Mode ---- */
+    const drawer        = document.getElementById('leaveDrawer');
+    const overlay       = document.getElementById('drawerOverlay');
+    const openBtn       = document.getElementById('openDrawerBtn');
+    const closeBtn      = document.getElementById('closeDrawerBtn');
+    const drawerTitle   = document.getElementById('drawerTitle');
+    const submitBtn     = document.getElementById('submitBtn');
+    const statusField   = document.getElementById('statusField');
+
+    let editMode = false;
+    let editingLeaveId = null;
+
+    function openDrawer() {
+      editMode = false;
+      editingLeaveId = null;
+      drawerTitle.textContent = 'Add New Leave';
+      submitBtn.textContent = 'Submit';
+      document.getElementById('leaveForm').reset();
+      statusField.classList.add('hidden');
+      clearErrors();
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+      overlay.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function openEditDrawer(leaveData) {
+      editMode = true;
+      editingLeaveId = leaveData.id;
+      drawerTitle.textContent = 'Edit Leave';
+      submitBtn.textContent = 'Update';
+      
+      document.getElementById('empId').value = leaveData.empId || '';
+      document.getElementById('leaveType').value = leaveData.leaveType || '';
+      document.getElementById('fromDate').value = leaveData.fromDate || '';
+      document.getElementById('toDate').value = leaveData.toDate || '';
+      
+      statusField.classList.remove('hidden');
+      document.getElementById('status').value = leaveData.status || 'Pending';
+      
+      clearErrors();
+      drawer.classList.remove('translate-x-full');
+      drawer.classList.add('translate-x-0');
+      overlay.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('translate-x-0');
+      drawer.classList.add('translate-x-full');
+      overlay.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+      statusField.classList.add('hidden');
+    }
+
+    function clearErrors() {
+      ['empId', 'leaveType', 'fromDate', 'toDate'].forEach(id => {
+        const field = document.getElementById(id);
+        if (field) {
+          field.classList.remove('border-red-500');
+          const err = field.parentElement.querySelector('.field-error');
+          if (err) err.remove();
+        }
+      });
+    }
+
+    openBtn.addEventListener('click', openDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+    overlay.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+    /* ---- Edit Buttons ---- */
+    document.querySelectorAll('.edit-leave-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openEditDrawer({
+          id: btn.dataset.id,
+          empId: btn.dataset.empid,
+          leaveType: btn.dataset.leavetype,
+          fromDate: btn.dataset.fromdate,
+          toDate: btn.dataset.todate,
+          status: btn.dataset.status
+        });
+      });
+    });
+
+    /* ---- Form Validation ---- */
+    const form = document.getElementById('leaveForm');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const empId     = document.getElementById('empId');
+      const leaveType = document.getElementById('leaveType');
+      const fromDate  = document.getElementById('fromDate');
+      const toDate    = document.getElementById('toDate');
+      const status    = document.getElementById('status');
+
+      let valid = true;
+
+      clearErrors();
+
+      function markInvalid(field, msg) {
+        field.classList.add('border-red-500');
+        const p = document.createElement('p');
+        p.className = 'field-error text-xs text-red-500 mt-1';
+        p.textContent = msg;
+        field.parentElement.appendChild(p);
+        valid = false;
+      }
+
+      if (!empId.value.trim())   markInvalid(empId,     'Employee ID is required.');
+      if (!leaveType.value)      markInvalid(leaveType, 'Please select a leave type.');
+      if (!fromDate.value)       markInvalid(fromDate,  'From Date is required.');
+      if (!toDate.value)         markInvalid(toDate,    'To Date is required.');
+      if (fromDate.value && toDate.value && toDate.value < fromDate.value)
+        markInvalid(toDate, 'To Date cannot be before From Date.');
+      if (editMode && !status.value)
+        markInvalid(status, 'Please select a status.');
+
+      if (!valid) return;
+
+      const formData = {
+        empId:     empId.value.trim(),
+        leaveType: leaveType.value,
+        fromDate:  fromDate.value,
+        toDate:    toDate.value,
+      };
+
+      if (editMode) {
+        formData.id = editingLeaveId;
+        formData.status = status.value;
+        console.log('Leave updated:', formData);
+      } else {
+        console.log('Leave created:', formData);
+      }
+
+      form.reset();
+      closeDrawer();
+    });
+
+    /* ---- Filters (backend-ready hooks) ---- */
+    ['filterDate', 'filterName', 'filterLeaveType'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', () => {
+        console.log('Filter changed:', id, el.value);
+      });
+    });
+  </script>
+
+</body>
+</html>

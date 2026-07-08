@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title th:text="${pageTitle} ?: 'SMS'">SMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex h-screen bg-gray-100 overflow-hidden">
+  <!-- Sidebar slot -->
+  <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+  <!-- Main content slot -->
+  <main class="flex-1 overflow-y-auto" th:replace="~{::content}">
+    <!-- Page content injected here -->
+  </main>
+  <script src="/static/js/sidebar.js"></script>
+</body>
+</html>
