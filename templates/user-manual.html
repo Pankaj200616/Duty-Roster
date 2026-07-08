@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::content})}">
+<body>
+  <th:block th:fragment="content">
+    <div class="p-8">
+      <!-- Page Header with Language Selector -->
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">User Manual</h1>
+        
+        <!-- Language Selector -->
+        <div class="flex items-center gap-2">
+          <label for="languageSelector" class="text-sm font-medium text-gray-700">Language:</label>
+          <select 
+            id="languageSelector" 
+            class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="en" selected>English</option>
+            <option value="hi">हिंदी</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Introduction Card -->
+      <section class="bg-white rounded-xl shadow p-6 mb-6">
+        <div class="flex items-start gap-4">
+          <!-- Manual Icon -->
+          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          
+          <!-- Introduction Content -->
+          <div class="flex-1">
+            <h2 class="text-xl font-bold text-gray-800 mb-2" data-lang-en="What is the User Manual?" data-lang-hi="यूज़र मैनुअल क्या है?">
+              What is the User Manual?
+            </h2>
+            <p class="text-gray-600 leading-relaxed" data-lang-en="This manual helps users understand how to use all major modules of the Security Management System. Follow the instructions below to perform common tasks." data-lang-hi="यह मैनुअल आपको सिक्योरिटी मैनेजमेंट सिस्टम के सभी प्रमुख मॉड्यूल का उपयोग करने में सहायता करेगा। नीचे दिए गए निर्देशों का पालन करें।">
+              This manual helps users understand how to use all major modules of the Security Management System. Follow the instructions below to perform common tasks.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Accordion Sections -->
+      <div class="space-y-4">
+        
+        <!-- Section 1: Employee Management (Expanded by default) -->
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+          <!-- Accordion Header -->
+          <button 
+            class="accordion-header w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors"
+            data-target="section1"
+          >
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-gray-800 mb-1">Employee Management</h3>
+              <p class="text-sm text-gray-500" data-lang-en="How to add and manage employees." data-lang-hi="कर्मचारियों को जोड़ने और प्रबंधित करने की प्रक्रिया।">
+                How to add and manage employees.
+              </p>
+            </div>
+            <svg class="accordion-arrow w-5 h-5 text-gray-500 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          
+          <!-- Accordion Content -->
+          <div id="section1" class="accordion-content" style="max-height: 1000px;">
+            <div class="p-5 pt-0 border-t">
+              <div class="space-y-4">
+                <h4 class="font-semibold text-gray-800" data-lang-en="How to Add an Employee" data-lang-hi="कर्मचारी कैसे जोड़ें">
+                  How to Add an Employee
+                </h4>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                  <li data-lang-en="Open Employee Management from the sidebar." data-lang-hi="साइडबार से Employee Management खोलें।">
+                    Open Employee Management from the sidebar.
+                  </li>
+                  <li data-lang-en="Click Add New Employee." data-lang-hi="Add New Employee पर क्लिक करें।">
+                    Click Add New Employee.
+                  </li>
+                  <li data-lang-en="Enter Employee ID." data-lang-hi="Employee ID दर्ज करें।">
+                    Enter Employee ID.
+                  </li>
+                  <li data-lang-en="Enter Employee Name." data-lang-hi="कर्मचारी का नाम दर्ज करें।">
+                    Enter Employee Name.
+                  </li>
+                  <li data-lang-en="Select Agency." data-lang-hi="एजेंसी का चयन करें।">
+                    Select Agency.
+                  </li>
+                  <li data-lang-en="Select Designation." data-lang-hi="पदनाम का चयन करें।">
+                    Select Designation.
+                  </li>
+                  <li data-lang-en="Click Submit." data-lang-hi="Submit पर क्लिक करें।">
+                    Click Submit.
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Leave Management -->
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+          <!-- Accordion Header -->
+          <button 
+            class="accordion-header w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors"
+            data-target="section2"
+          >
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-gray-800 mb-1">Leave Management</h3>
+              <p class="text-sm text-gray-500" data-lang-en="How to create and manage employee leave records." data-lang-hi="कर्मचारियों के अवकाश रिकॉर्ड जोड़ने और प्रबंधित करने की प्रक्रिया।">
+                How to create and manage employee leave records.
+              </p>
+            </div>
+            <svg class="accordion-arrow w-5 h-5 text-gray-500 transform transition-transform duration-200 rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          
+          <!-- Accordion Content -->
+          <div id="section2" class="accordion-content" style="max-height: 0;">
+            <div class="p-5 pt-0 border-t">
+              <div class="space-y-4">
+                <h4 class="font-semibold text-gray-800" data-lang-en="How to Add Leave Record" data-lang-hi="अवकाश रिकॉर्ड कैसे जोड़ें">
+                  How to Add Leave Record
+                </h4>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                  <li data-lang-en="Open Leave Management from the sidebar." data-lang-hi="साइडबार से Leave Management खोलें।">
+                    Open Leave Management from the sidebar.
+                  </li>
+                  <li data-lang-en="Click Add New Leave." data-lang-hi="Add New Leave पर क्लिक करें।">
+                    Click Add New Leave.
+                  </li>
+                  <li data-lang-en="Enter Employee ID." data-lang-hi="Employee ID दर्ज करें।">
+                    Enter Employee ID.
+                  </li>
+                  <li data-lang-en="Select Leave Type (REST, ABSENT, EL, CL, ML)." data-lang-hi="अवकाश प्रकार का चयन करें (REST, ABSENT, EL, CL, ML)।">
+                    Select Leave Type (REST, ABSENT, EL, CL, ML).
+                  </li>
+                  <li data-lang-en="Choose From Date." data-lang-hi="From Date चुनें।">
+                    Choose From Date.
+                  </li>
+                  <li data-lang-en="Choose To Date." data-lang-hi="To Date चुनें।">
+                    Choose To Date.
+                  </li>
+                  <li data-lang-en="Click Submit." data-lang-hi="Submit पर क्लिक करें।">
+                    Click Submit.
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Attendance Management -->
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+          <!-- Accordion Header -->
+          <button 
+            class="accordion-header w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors"
+            data-target="section3"
+          >
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-gray-800 mb-1">Attendance Management</h3>
+              <p class="text-sm text-gray-500" data-lang-en="How to mark and manage attendance." data-lang-hi="उपस्थिति दर्ज करने और प्रबंधित करने की प्रक्रिया।">
+                How to mark and manage attendance.
+              </p>
+            </div>
+            <svg class="accordion-arrow w-5 h-5 text-gray-500 transform transition-transform duration-200 rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          
+          <!-- Accordion Content -->
+          <div id="section3" class="accordion-content" style="max-height: 0;">
+            <div class="p-5 pt-0 border-t">
+              <div class="space-y-4">
+                <h4 class="font-semibold text-gray-800" data-lang-en="How to Mark Attendance" data-lang-hi="उपस्थिति कैसे दर्ज करें">
+                  How to Mark Attendance
+                </h4>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                  <li data-lang-en="Open Attendance from the sidebar." data-lang-hi="साइडबार से Attendance खोलें।">
+                    Open Attendance from the sidebar.
+                  </li>
+                  <li data-lang-en="Search for employee if required." data-lang-hi="यदि आवश्यक हो तो कर्मचारी को खोजें।">
+                    Search for employee if required.
+                  </li>
+                  <li data-lang-en="Select attendance status for each employee." data-lang-hi="प्रत्येक कर्मचारी के लिए उपस्थिति स्थिति चुनें।">
+                    Select attendance status for each employee.
+                  </li>
+                  <li data-lang-en="Click Save to record attendance." data-lang-hi="उपस्थिति रिकॉर्ड करने के लिए Save पर क्लिक करें।">
+                    Click Save to record attendance.
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Reports -->
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+          <!-- Accordion Header -->
+          <button 
+            class="accordion-header w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors"
+            data-target="section4"
+          >
+            <div class="flex-1">
+              <h3 class="text-lg font-bold text-gray-800 mb-1">Reports</h3>
+              <p class="text-sm text-gray-500" data-lang-en="How to view and print reports." data-lang-hi="रिपोर्ट देखने और प्रिंट करने की प्रक्रिया।">
+                How to view and print reports.
+              </p>
+            </div>
+            <svg class="accordion-arrow w-5 h-5 text-gray-500 transform transition-transform duration-200 rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          
+          <!-- Accordion Content -->
+          <div id="section4" class="accordion-content" style="max-height: 0;">
+            <div class="p-5 pt-0 border-t">
+              <div class="space-y-4">
+                <h4 class="font-semibold text-gray-800" data-lang-en="How to Generate Reports" data-lang-hi="रिपोर्ट कैसे बनाएं">
+                  How to Generate Reports
+                </h4>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                  <li data-lang-en="Open Reports from the sidebar." data-lang-hi="साइडबार से Reports खोलें।">
+                    Open Reports from the sidebar.
+                  </li>
+                  <li data-lang-en="Select the report date using the date picker." data-lang-hi="Date Picker का उपयोग करके रिपोर्ट तिथि चुनें।">
+                    Select the report date using the date picker.
+                  </li>
+                  <li data-lang-en="Review deployment details in the table." data-lang-hi="तालिका में तैनाती विवरण की समीक्षा करें।">
+                    Review deployment details in the table.
+                  </li>
+                  <li data-lang-en="Click Print Duty Roster if you need a printed copy." data-lang-hi="यदि आपको प्रिंट की आवश्यकता है तो Print Duty Roster पर क्लिक करें।">
+                    Click Print Duty Roster if you need a printed copy.
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Important Note Section -->
+      <section class="bg-yellow-50 border-l-4 border-yellow-400 rounded-xl shadow p-6 mt-6">
+        <div class="flex items-start gap-4">
+          <!-- Warning Icon -->
+          <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+          </div>
+          
+          <!-- Note Content -->
+          <div class="flex-1">
+            <h3 class="text-lg font-bold text-yellow-800 mb-2" data-lang-en="Important Note" data-lang-hi="महत्वपूर्ण नोट">
+              Important Note
+            </h3>
+            <p class="text-yellow-800 leading-relaxed" data-lang-en="Always verify employee information before saving records. Contact the administrator if any issue occurs." data-lang-hi="रिकॉर्ड सहेजने से पहले कर्मचारी की जानकारी अवश्य जांचें। किसी भी समस्या की स्थिति में एडमिनिस्ट्रेटर से संपर्क करें।">
+              Always verify employee information before saving records. Contact the administrator if any issue occurs.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+    <script src="/static/js/user-manual.js"></script>
+  </th:block>
+</body>
+</html>
