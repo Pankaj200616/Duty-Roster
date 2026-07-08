@@ -1,3 +1,4 @@
 node_modules/
 package-lock.json
-.kiro/
+.kiro/**/.config.kiro
+.kiro/**/tasks.meta.json
